@@ -61,7 +61,8 @@ app.delete('/api/students/:id', async (req, res) => {
 });
 
 // Route trang chủ
-app.get('*', (req, res) => {
+// Dùng Regex (/.*/) sẽ bỏ qua được lỗi phân tích cú pháp
+app.get(/.*/, (req, res) => { 
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
