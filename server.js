@@ -5,7 +5,9 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+// --- QUAN TRỌNG: Hugging Face bắt buộc dùng Port 7860 ---
+const PORT = 7860; 
 
 // Middleware
 app.use(cors());
@@ -13,7 +15,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Kết nối MongoDB
-// (Tạm thời để localhost, tí nữa có link Cloud Atlas mình sẽ thay vào sau)
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/studentdb';
 
 mongoose.connect(MONGO_URI)
@@ -60,12 +61,12 @@ app.delete('/api/students/:id', async (req, res) => {
     }
 });
 
-// Route trang chủ
-// Dùng Regex (/.*/) sẽ bỏ qua được lỗi phân tích cú pháp
+// Route trang chủ (Catch-all route phải để cuối cùng)
 app.get(/.*/, (req, res) => { 
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Lắng nghe tại cổng 7860
 app.listen(PORT, () => {
     console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
 });
